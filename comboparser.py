@@ -312,7 +312,7 @@ def ComboParser(slpfile):
             for each_move in combo.moves:
                 theframe = all_frames[each_move[1]]
                 comboer = theframe.ports[combo.port].leader
-                move_coord = comboer.post.position
+                move_coord = {"x": comboer.post.position.x, "y": comboer.post.position.y}
                 coord_list.append(move_coord)
             #re add to list of combo
             combo.FinalizeMoves(coord_list)
@@ -338,10 +338,11 @@ def main_specific(character, stage, hits, vs_chars, slippiSource):
         "summit" : "Summit-11",
         "ownGames" : "falco"
     }
+    dire = directoryDict[slippiSource]
     slpfiles = os.listdir(directoryDict[slippiSource])
     slpfiles = [x for x in slpfiles if '.slp' in x]
     allcombos = []
-    for slp in slpfiles:
+    for slp in slpfiles[0:50]:
         print(slp)
         combolist , startframelist, rawcombolist = ComboParser(dire + "/" + slp)
         if combolist != None:

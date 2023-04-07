@@ -3,7 +3,7 @@ import { SyntheticEvent, useEffect, useState } from "react";
 interface Options {
   stage: string;
   characterPicked: string;
-  charactersAgainst: string[];
+  charactersAgainst: string;
   minHits: number;
   slippiSource: string;
 }
@@ -14,36 +14,23 @@ export const Main = () => {
   const [options, setOptions] = useState<Options>({
     stage: "",
     characterPicked: "",
-    charactersAgainst: [],
+    charactersAgainst: "",
     minHits: 0,
     slippiSource: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === "charactersAgainst") {
-      setOptions((prev) => {
-        return {
-          ...prev,
-          charactersAgainst: e.target.value.split(","),
-        };
-      });
-    } else {
-      setOptions((prev) => {
-        return {
-          ...prev,
-          [e.target.name]: e.target.value,
-        };
-      });
-    }
+    setOptions((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
   };
 
   const submitOptions = () => {
     fetch(
-      `http://127.0.0.1:5000/${options.stage}/${
-        options.characterPicked
-      }/${JSON.stringify(options.charactersAgainst)}/${options.minHits}/${
-        options.slippiSource
-      }`
+      `http://127.0.0.1:5000/${options.stage}/${options.characterPicked}/${options.charactersAgainst}/${options.minHits}/${options.slippiSource}`
     )
       .then((res) => res.json())
       .then((data: { data: Options }) => {
